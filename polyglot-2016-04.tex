@@ -1,0 +1,143 @@
+\documentclass[mathserif,xcolor=svgnames]{beamer}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{color}
+
+%\definecolor{dkgreen}{rgb}{0,0.6,0}
+%\definecolor{gray}{rgb}{0.5,0.5,0.5}
+%\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  %commentstyle=\color{dkgreen},
+  %stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+  language=Caml
+}
+
+%\usepackage{beamerthemeAmsterdam} % Non-standard. Find on Google.
+\usepackage{beamerleanprogress} % Non-standard. Find on Google.
+  \renewcommand{\emph}[1]{{\em #1}}
+%\usecolortheme{seahorse} % lighter colours
+\setbeamertemplate{navigation symbols}{} % remove silly navigation symbols
+%\setbeameroption{show notes}
+
+% Don't include backup slides in page numbers; see
+% stackoverflow.com/questions/732902/ignoring-page-numbers-in-backup-slides
+\newcommand{\backupbegin}{
+   \newcounter{backupslides}
+   \setcounter{backupslides}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \addtocounter{backupslides}{-\value{framenumber}}
+   \addtocounter{framenumber}{\value{backupslides}}
+}
+
+\usepackage{amsmath}
+  % Slanted captical Greek letters
+  \let\upPi\Pi
+  \let\upSigma\Sigma
+  \let\Gamma\varGamma
+  \let\Delta\varDelta
+  \let\Theta\varTheta
+  \let\Lambda\varLambda
+  \let\Xi\varXi
+  \let\Pi\varPi
+  \let\Sigma\varSigma
+  \let\Upsilon\varUpsilon
+  \let\Phi\varPhi
+  \let\Psi\varPsi
+  \let\Omega\varOmega
+
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{array,multirow}
+
+% Specific to Beamer slides
+\renewcommand{\_}{\mathunderscore}
+
+
+%TODO:
+\begin{document}
+
+\title[OCaml]{\
+  Ocaml
+}
+\author[Anders Fugmann]{\
+  \normalfont \underline{Anders Fugmann}
+}
+\institute{Polyglot Meetup \#8
+}
+\date{}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}
+  \frametitle{Overview}
+
+  \begin{enumerate}
+  \item What is Ocaml
+  \item A small example
+  \item Another short example
+  \item Extended example
+  \item Full scale
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+   \frametitle{What is OCaml}
+   \begin{enumerate}
+   \item Functional Programming Language
+   \item Interpreted and nativly compiled (1/3 speed of C)
+   \item Supports imperative constructs
+   \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A small example}
+  \begin{lstlisting}
+  let rec fac = function
+    | 0 -> 1
+    | n -> n * fac (n - 1)
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A calculator}
+  \lstinputlisting{polyparser.ml}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{AVL trees}
+  \begin{lstlisting}
+    (* Piano numbers: succ (succ (succ z)): 3 *)
+    type z
+    type succ
+    type 'a s = succ * 'a
+
+    type _ node =
+      | LNode: ('a s node * 'a node   * int) -> 'a s s node
+      | RNode: ('a node   * 'a s node * int) -> 'a s s node
+      | BNode: ('a node   * 'a node   * int) -> 'a s node
+      | Empty: z node
+  \end{lstlisting}
+
+\end{frame}
+
+\section{}
+\begin{frame}
+  \center \LARGE Questions
+\end{frame}
+
+\end{document}

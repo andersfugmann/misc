@@ -1,0 +1,11 @@
+*~
+*.out
+*.log
+*.pdf
+*.aux
+*.nav
+*.cm*
+*.snm
+*.toc
+*.vrb
+polyparser
