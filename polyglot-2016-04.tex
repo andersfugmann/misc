@@ -2,26 +2,31 @@
 \usepackage{colortbl}
 \usepackage{listings}
 \usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
 
-%\definecolor{dkgreen}{rgb}{0,0.6,0}
-%\definecolor{gray}{rgb}{0.5,0.5,0.5}
-%\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
-  columns=flexible,
+  columns=fullflexible,
+  %basicstyle=\footnotesize,
   basicstyle={\small\ttfamily},
   numbers=none,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
-  %commentstyle=\color{dkgreen},
-  %stringstyle=\color{mauve},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
   breaklines=true,
   breakatwhitespace=true,
-  tabsize=3,
-  language=Caml
+  language=Caml,
+  morekeywords={type,val,let,in,rec,function},
+  tabsize=4,
+  upquote=true
 }
 
 %\usepackage{beamerthemeAmsterdam} % Non-standard. Find on Google.
@@ -95,13 +100,35 @@
   \end{enumerate}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
    \frametitle{What is OCaml}
    \begin{enumerate}
    \item Functional Programming Language
    \item Interpreted and nativly compiled (1/3 speed of C)
    \item Supports imperative constructs
    \end{enumerate}
+\end{frame}
+
+
+% Brief overview
+% Fac
+% Let bindings, curreied functions, high order functions
+% Imperative constructs
+% Concurrency (No paralism) - Like stackless python and javascript
+% An example of an expression parser
+% Go though the steps
+% Show the output
+% Concurrency (No paralism) - Like stackless python and javascript
+% Create a web-server
+% Explain what happends
+% Talk about opam
+% Testing - General thoughs on why functional programming is easier to
+%   test
+% Create a simple test suite
+
+
+\begin{frame}[fragile]
+  \frametitle{something}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -114,9 +141,49 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{A calculator}
+  \frametitle{Language Constructs}
+  \begin{itemize}
+    \item strictly evaluated
+    \item let bindings are aliases
+    \item function arguments are seperated by space
+    \item functions arguments are curried
+    \item functions are first class
+    \item tail call optimization
+    \item no null pointers!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Lists}
+  Lists are immutable.
+  List are destructed with the '::' operator
+  \begin{lstlisting}
+    (* Destutter *)
+    let rec destutter = function
+      | [] -> []
+      | [ x ] -> [ x ]
+      | x :: y :: xs when x = y -> destutter (y :: xs)
+      | x :: y :: xs -> x :: destutter (y :: xs)
+
+    destutter [ 1; 3; 3; 5 ]
+
+    (* Produces *)
+    [ 1; 3; 5 ]
+  \end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{An Expression Evaluator}
   \lstinputlisting{polyparser.ml}
 \end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extendeed Expression Evaluator}
+  \lstinputlisting{polyparser_test.ml}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \frametitle{AVL trees}
