@@ -24,6 +24,10 @@ let rec eval = function
   | `Binop (`Add, a, b) -> eval a + eval b
   | `Binop (`Mul, a, b) -> eval a * eval b
 
+
+let to_string n =
+  string_of_int n
+
 let () =
   (* Read an expression from stdin *)
   let expr = parse (Sys.argv.(1)) in

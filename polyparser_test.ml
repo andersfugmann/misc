@@ -19,7 +19,6 @@ let rec eval = function
         | `Int a, `Int b -> `Bool (a < b)
         | _ -> failwith "Cannot multiply booleans"
       end
-
   | `Test(pred, a, b) ->
       begin
         match eval pred with
