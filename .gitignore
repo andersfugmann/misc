@@ -9,3 +9,5 @@
 *.toc
 *.vrb
 polyparser
+*.js
+polyparser_gadt
