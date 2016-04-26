@@ -1,6 +1,9 @@
+.PHONY: force
 .DELETE_ON_ERROR:
 
-%.pdf: %.tex
+.DEFAULT_GOAL = polyglot-2016-04.pdf
+
+%.pdf: %.tex force
 	pdflatex $<
 
 %: %.ml
@@ -14,3 +17,5 @@
 
 clean:
 	$(RM) slides.aux slides.log slides.nav slides.out slides.snm slides.toc
+
+force:

@@ -16,7 +16,7 @@
   columns=fullflexible,
   %basicstyle=\footnotesize,
   basicstyle={\small\ttfamily},
-  numbers=none,
+  numbers=left,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
   commentstyle=\color{dkgreen},
@@ -74,7 +74,7 @@
 %TODO:
 \begin{document}
 
-\title[OCaml]{\
+\title[Introduction to OCaml]{\
   Ocaml
 }
 \author[Anders Fugmann]{\
@@ -98,17 +98,25 @@
   \item Extended example
   \item Full scale
   \end{enumerate}
+
 \end{frame}
 
 \begin{frame}[fragile]
    \frametitle{What is OCaml}
-   \begin{enumerate}
-   \item Functional Programming Language
-   \item Interpreted and nativly compiled (1/3 speed of C)
-   \item Supports imperative constructs
-   \end{enumerate}
+   \begin{itemize}
+   \item Functional Programming Language - But not pure!
+   \item Terse
+   \item Garbage collected
+   \item Fast
+   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{What is OCaml}
+  \begin{center}
+    \Huge It's fun
+  \end{center}
+\end{frame}
 
 % Brief overview
 % Fac
@@ -131,12 +139,13 @@
 % program
 
 
-\begin{frame}[fragile]
-  \frametitle{something}
-\end{frame}
+%\begin{frame}[fragile]
+%  \frametitle{something}
+%\end{frame}
 
 \begin{frame}[fragile]
   \frametitle{A small example}
+  A Textbook example; factorial
   \begin{lstlisting}
   # let rec fac = function
     | 0 -> 1
@@ -149,65 +158,192 @@
   \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Language Constructs}
+\section{Language}
+\begin{frame}
   \begin{itemize}
-    \item strictly evaluated
-    \item let bindings are aliases
-  \end{itemize}
-
-  \begin{lstlisting}
-    $ utop
-    # let x = 5;;
-    val x : ... = 5
-    # let y = 6;;
-    val y : ... = 5
-    # x * y;;
-    - : ... = 30
-  \end{lstlisting}
-
-  \begin{itemize}
-    \item function arguments are seperated by space
-    \item functions arguments are curried
-    \item functions are first class
-    \item tail call optimization
-    \item no null pointers!
+  \item Functions are first class.
+  \item Pattern matching
+  \item Function curring
+  \item Lambda functions
+  \item Algebraic Datatypes, Tuples and records
+  \item Modules and Functors
+  \item ...
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-  \frametitle{Lists}
-  Lists are immutable.
-  List are destructed with the '::' operator
-  \begin{lstlisting}
-    (* Destutter *)
-    # let rec destutter = function
-      | [] -> []
-      | [ x ] -> [ x ]
-      | x :: y :: xs when x = y -> destutter (y :: xs)
-      | x :: y :: xs -> x :: destutter (y :: xs)
-    val destutter : ... = <fun>
+%% \section{Language Constructs}
+%% \begin{frame}[fragile]
+%%   \frametitle{Language Constructs}
+%%   \begin{itemize}
+%%     \item strictly evaluated
+%%     \item let bindings are aliases
+%%   \end{itemize}
 
-    # destutter [ 1; 3; 3; 5 ]
-    - : ... = [1; 3; 5]
+%%   \begin{lstlisting}
+%%     # let x = 5;;
+%%     val x : ... = 5
+%%     # let y = 6;;
+%%     val y : ... = 5
+%%     # x * y;;
+%%     - : ... = 30
+%%   \end{lstlisting}
+
+%% \end{frame}
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Functions}
+%%   \begin{itemize}
+%%     \item function arguments are seperated by space
+%%     \item functions arguments are curried
+%%     \item functions are first class
+%%     \item tail call optimization
+%%   \end{itemize}
+
+%%   \begin{lstlisting}
+%%     # let f x = x + 1;;
+%%     var f : ... = <fun>
+%%     # let g x y = x + y;;
+%%     var g : ... = <fun>
+
+%%     # apply f x = f x;;
+%%     var f : ... = <fun>
+%%     # apply f 5;;
+%%     - : ... = 6
+
+%%     # let h = apply f;;
+%%     var g : ... = <fun>
+
+%%     # g 2;;
+%%     - : ... = 3
+
+%%   \end{lstlisting}
+%% \end{frame}
+
+%% % \item no null pointers!
+
+%% \begin{frame}[fragile]
+%%   \frametitle{Lists}
+%%   Lists are immutable.
+%%   List are destructed with the '::' operator
+%%   \begin{lstlisting}
+%%     (* Destutter *)
+%%     # let rec destutter = function
+%%       | [] -> []
+%%       | [ x ] -> [ x ]
+%%       | x :: y :: xs when x = y -> destutter (y :: xs)
+%%       | x :: y :: xs -> x :: destutter (y :: xs)
+%%     val destutter : ... = <fun>
+
+%%     # destutter [ 1; 3; 3; 5 ]
+%%     - : ... = [1; 3; 5]
+%%   \end{lstlisting}
+
+%% \end{frame}
+
+\section{A Small Calculator}
+
+\begin{frame}[fragile]
+  \frametitle{A small calculator}
+  A small calculate to evaluate expressions like $3 + 4$.
+  \lstinputlisting[firstline=23]{polyparser.ml}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Testing the code}
+  \begin{lstlisting}
+    $ ocamlfind ocamlc -package mparser -linkpkg \
+      -o polyparser polyparser.ml
+    $ ./polyparser 3+4
+    7
+    $ ./polyparser 3+4*7+1
+    32
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A small webserver}
+  \lstinputlisting[firstline=32]{polyparser_http.ml}
+  http://localhost/3+4
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Compiling to javascript}
+  Ocaml can be compiled to javascript and has API's for DOM
+  manipulation, js events, xhdr etc.
+
+  \begin{lstlisting}
+    $ js_of_ocaml polyparser -o polyparser.ml
+    $ nodejs polyparser.js 3+4
+    7
+  \end{lstlisting}
+
+  But the javsscript code is not really readable.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extended Calculator}
+  Lets extend our small language with a tenary operator:
+
+  (5 < 4) ? (4 * 4) : (5 * 5) -> 25
+
+  However, we can create illegal expressions:
+
+  (5 < 4) ? ( (4 < 5) * 4) : ( 5 * 5) -> *error*
+
+  Lets look at an evaluator in Ocaml.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extended Calculator}
+  \lstinputlisting[lastline=29,basicstyle={\tiny\ttfamily}]{polyparser_test.ml}
+\end{frame}
+
+\section{Testing}
+\begin{frame}[fragile]
+  \frametitle{Type Inference}
+  \begin{center}
+    \Huge Type inference
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Type Inference}
+  \begin{enumerate}
+  \item Deduces the type based on usage
+  \item Validates that the program is sound
+  \item Not explicitly typed!
+  \end{enumerate}
+
+  Do not make the illegal state representable!
+\end{frame}
+
+\begin{frame}[fragile]
+  Lets re-examine some of the previous examples:
+  \begin{lstlisting}
+  # let rec fac = function
+    | 0 -> 1
+    | n -> n * fac (n - 1);;
+  val fac : int -> int = <fun>
+
+  # fac 5;;
+  - : int = 120
+
+  # let f x y = x + y;;
+  val f : int -> int -> int;;
   \end{lstlisting}
 
 \end{frame}
 
-
 \begin{frame}[fragile]
-  \frametitle{An Expression Evaluator}
-  \lstinputlisting{polyparser.ml}
+  \frametitle{A Safe calculator}
+  \lstinputlisting[lastline=29,basicstyle={\tiny\ttfamily}]{gadtparser.ml}
 \end{frame}
-
-\begin{frame}[fragile]
-  \frametitle{An Extendeed Expression Evaluator}
-  \lstinputlisting{polyparser_test.ml}
-\end{frame}
-
 
 \begin{frame}[fragile]
   \frametitle{AVL trees}
+  Defining a balanced tree which the compiler will validate that its
+  always balanced.
+
   \begin{lstlisting}
     (* Piano numbers: succ (succ (succ z)): 3 *)
     type z
@@ -223,9 +359,35 @@
 
 \end{frame}
 
+\section{Try Ocaml}
+\begin{frame}[fragile]
+  \frametitle{Using Ocaml}
+  To try out ocaml go to https://try.ocamlpro.com/, or install it locally:
+  \begin{lstlisting}
+    $ brew install opam
+    $ opam switch 4.02.3
+    $ opam install utop
+    $ utop
+  \end{lstlisting}
+\end{frame}
+
+\section{Large Scale}
+\begin{frame}[fragile]
+  \begin{itemize}
+  \item Using Ocaml for more that 5 years at issuu
+  \item Approx 50K lines of OCaml code in production
+  \item Single thread parses ~2K Deep json structure and create
+    graphite statistics
+  \item Created DSL for user behavioural analysis, analysing more than
+    7 Billion events (one month) in minutes.
+  \end{itemize}
+\end{frame}
+
 \section{}
-\begin{frame}
-  \center \LARGE Questions
+\begin{frame}[fragile]
+  \begin{center}
+    \LARGE Questions
+  \end{center}
 \end{frame}
 
 \end{document}

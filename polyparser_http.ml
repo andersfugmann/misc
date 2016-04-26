@@ -1,3 +1,7 @@
+open Lwt
+open Cohttp
+open Cohttp_lwt_unix
+
 open MParser
 let infix p op =
   Infix (p |>> (fun _ a b -> (`Binop (op, a, b))), Assoc_left)
@@ -20,15 +24,20 @@ let parse_expression s =
     failwith msg
 
 
-(* Assume we have a parse_expression, that can convert a string
-   to an expression
-*)
 let rec eval = function
   | `Int n -> n
   | `Binop (`Add, a, b) -> eval a + eval b
   | `Binop (`Mul, a, b) -> eval a * eval b
 
-let () =
-  (* Read an expression from stdin *)
-  let expr = parse_expression (Sys.argv.(1)) in
-    print_endline (string_of_int (eval expr))
+let server =
+  let callback _conn req _body =
+    let path = req |> Request.uri |> Uri.path in
+    let expr = String.sub path 1 (String.length path-1) in
+    let res =
+      parse_expression expr |> eval |> string_of_int
+    in
+    Server.respond_string ~status:`OK ~body:res ()
+  in
+  Server.create ~mode:(`TCP (`Port 8000)) (Server.make ~callback ())
+
+let () = ignore (Lwt_main.run server)
