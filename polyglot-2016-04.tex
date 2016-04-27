@@ -78,7 +78,7 @@
   OCaml
 }
 \author[Anders Fugmann]{\
-  \normalfont \underline{Anders Fugmann}
+  \normalfont Anders Fugmann
 }
 \institute{Polyglot Meetup \#8
 }
@@ -132,7 +132,7 @@
   \item Functions are first class.
   \item Function currying
   \item Anonymous functions and closures
-  \item Algebraic Datatypes, Tuples and records
+  \item Algebraic Data types, Tuples and records
   \item Modules and Functors
   \item ...
   \end{itemize}
@@ -165,8 +165,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Compiling to javascript}
-  OCaml can be compiled to javascript and has API's for DOM
+  \frametitle{Compiling to JavaScript}
+  OCaml can be compiled to JavaScript and has API's for DOM
   manipulation, js events, XHR, etc.
 
   \begin{lstlisting}
@@ -175,7 +175,7 @@
     7
   \end{lstlisting}
   \pause
-  But the javascript code is not really readable.
+  But the JavaScript code is not really readable.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -253,7 +253,7 @@
 
 \begin{frame}[fragile]
   \frametitle{An Extended Calculator}
-  We extend our small language with a \textit{tenary} operator and
+  We extend our small language with a \textit{ternary} operator and
   replacing multiplication with  \textit{less equal} operator:
 
   \[(5 < 4) \mathbin? (4 + 4) : (5 + 5) \to 10\]
@@ -274,15 +274,15 @@
   \frametitle{An Extended Calculator}
   The Compiler will warn us about problems:
   \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},language=make]
-    File "adtparser_tenary.ml", line 11, characters 10-24:
+    File "adtparser_ternary.ml", line 11, characters 10-24:
     Warning 8: this pattern-matching is not exhaustive.
     Here is an example of a value that is not matched:
     (Bool _, _)
-    File "adtparser_tenary.ml", line 14, characters 10-24:
+    File "adtparser_ternary.ml", line 14, characters 10-24:
     Warning 8: this pattern-matching is not exhaustive.
     Here is an example of a value that is not matched:
     (Bool _, _)
-    File "adtparser_tenary.ml", line 17, characters 10-16:
+    File "adtparser_ternary.ml", line 17, characters 10-16:
     Warning 8: this pattern-matching is not exhaustive.
     Here is an example of a value that is not matched:
     Int _
@@ -293,7 +293,7 @@
 \begin{frame}[fragile]
   \frametitle{A Safe Calculator}
   Using Generalized Algebraic Data Types, we can express the
-  restrictions in our algrbra.
+  restrictions in our algebra.
 
   \lstinputlisting[basicstyle={\footnotesize\ttfamily}]{gadtparser.ml}
 \end{frame}
@@ -339,19 +339,22 @@
   \begin{itemize}
   \item Using OCaml for more that 5 years at issuu
   \item Approx. 50.000 lines of OCaml code in production
-  \item Microservice based architecture in an heterogenious environmentq
+  \item Micro service based architecture in an heterogeneous environment
   \item Single thread parses 2.000/sec large json structure and send
     statistics to \textit{graphite}
-  \item Created DSL for user behavioural analysis, analysing more than
+  \item Created DSL for user behavioural analysis, analyzing more than
     7 Billion events (one month) in (tenths of) minutes.
   \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Caveats}
+  \frametitle{Weak Points}
   \begin{itemize}
-  \item No parallism
-  \item d
+  \item No multithreading
+  \item Stacktraces can be misleading
+  \item Exceptions are not checked
+  \item Too many build systems: Make, OMake, OCamlBuild, ...
+  \item Only support for Emacs and Vim
   \end{itemize}
 \end{frame}
 
