@@ -20,8 +20,7 @@ let parse_expression s =
     failwith msg
 
 
-(* Assume we have a parse_expression, that can convert a string
-   to an expression
+(* Assume we have a parse_expression, that can convert a string to an expression
 *)
 let rec eval = function
   | `Int n -> n
