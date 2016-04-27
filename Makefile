@@ -7,7 +7,7 @@
 	pdflatex $<
 
 %: %.ml
-	ocamlfind ocamlopt -package mparser -linkpkg -o $@ $<
+	ocamlfind ocamlc -package mparser -linkpkg -o $@ $<
 
 %.byte: %.ml
 	ocamlfind ocamlc -package mparser -linkpkg -o $@ $<
