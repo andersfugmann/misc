@@ -299,7 +299,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{A Safe calculator}
+  \frametitle{A Safe Calculator}
   The compiler will not accept illegal expressions:
 
   \[4 + (5 < 4)\]
@@ -333,6 +333,8 @@
 
 \end{frame}
 
+%% Add slide about not representing the illegal state
+
 \section{At Scale}
 \begin{frame}[fragile]
   \frametitle{OCaml at Scale}
@@ -353,8 +355,6 @@
   \item No multithreading
   \item Stacktraces can be misleading
   \item Exceptions are not checked
-  \item Too many build systems: Make, OMake, OCamlBuild, ...
-  \item Only support for Emacs and Vim
   \end{itemize}
 \end{frame}
 
@@ -368,7 +368,7 @@
   \end{itemize}
   \begin{lstlisting}[numbers=none,frame=none]
     $ brew install opam
-    $ opam switch 4.02.3
+    $ opam switch 4.11.1
     $ opam install utop
     $ utop
   \end{lstlisting}

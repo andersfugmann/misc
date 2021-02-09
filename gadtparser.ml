@@ -5,7 +5,7 @@ type _ binop =
 type _ expr =
   | Int: int -> int expr
   | Bool: bool -> bool expr
-  | Binop: ('a binop * int expr * int expr) -> 'a expr
+  | Binop: (int binop * int expr * int expr) -> int expr
   | Cond: (bool expr * 'a expr * 'a expr) -> 'a expr
 
 let rec eval: type a. a expr -> a = function
