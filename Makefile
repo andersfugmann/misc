@@ -1,7 +1,10 @@
 .PHONY: force
 .DELETE_ON_ERROR:
 
-.DEFAULT_GOAL = polyglot-2016-04.pdf
+.DEFAULT_GOAL = all
+
+.PHONY: all
+all: polyglot-2016-04.pdf issuu_ocaml_gadt-2021-05-04.pdf
 
 %.pdf: %.tex force
 	pdflatex $<
@@ -16,6 +19,6 @@
 	js_of_ocaml $<
 
 clean:
-	$(RM) slides.aux slides.log slides.nav slides.out slides.snm slides.toc
+	$(RM) *.aux *.log *.nav *.out *.snm *.toc *.pdf
 
 force:

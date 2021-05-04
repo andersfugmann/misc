@@ -1,0 +1,443 @@
+\documentclass[xcolor=svgnames]{beamer}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=fullflexible,
+  %basicstyle=\footnotesize,
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  language=Caml,
+  morekeywords={type,val,let,in,rec,function},
+  tabsize=4,
+  upquote=true
+}
+
+%\usepackage{beamerthemeAmsterdam} % Non-standard. Find on Google.
+\usepackage{beamerleanprogress} % Non-standard. Find on Google.
+  \renewcommand{\emph}[1]{{\em #1}}
+%\usecolortheme{seahorse} % lighter colours
+\setbeamertemplate{navigation symbols}{} % remove silly navigation symbols
+%\setbeameroption{show notes}
+
+% Don't include backup slides in page numbers; see
+% stackoverflow.com/questions/732902/ignoring-page-numbers-in-backup-slides
+\newcommand{\backupbegin}{
+   \newcounter{backupslides}
+   \setcounter{backupslides}{\value{framenumber}}
+}
+\newcommand{\backupend}{
+   \addtocounter{backupslides}{-\value{framenumber}}
+   \addtocounter{framenumber}{\value{backupslides}}
+}
+
+\usepackage{amsmath}
+  % Slanted captical Greek letters
+  \let\upPi\Pi
+  \let\upSigma\Sigma
+  \let\Gamma\varGamma
+  \let\Delta\varDelta
+  \let\Theta\varTheta
+  \let\Lambda\varLambda
+  \let\Xi\varXi
+  \let\Pi\varPi
+  \let\Sigma\varSigma
+  \let\Upsilon\varUpsilon
+  \let\Phi\varPhi
+  \let\Psi\varPsi
+  \let\Omega\varOmega
+
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{array,multirow}
+
+% Specific to Beamer slides
+\renewcommand{\_}{\mathunderscore}
+
+
+%TODO:
+\begin{document}
+
+\title[OCaml overview]{\
+  OCaml
+}
+\author[Anders Fugmann]{\
+  \normalfont Anders Fugmann
+}
+\institute{Issuu 2021-05-04}
+\date{}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}[fragile]
+  \frametitle{What is OCaml}
+  \pause
+   \begin{itemize}
+   \item Functional Programming Language - But not pure!
+  \pause
+   \item Terse
+  \pause
+   \item Garbage collected
+  \pause
+   \item Fast
+   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{What is OCaml}
+  \begin{center}
+    \Huge It's fun
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A small example}
+  A Textbook example; factorial
+  \begin{lstlisting}
+  # let rec fac = function
+    | 0 -> 1
+    | n -> n * fac (n - 1);;
+  val fac : ... = <fun>
+
+  # fac 5;;
+  - : ... = 120
+
+  \end{lstlisting}
+\end{frame}
+
+\section{Language}
+\begin{frame}
+  OCaml Language
+  \begin{itemize}
+  \item Pattern matching
+  \item Functions are first class.
+  \item Function currying
+  \item Anonymous functions and closures
+  \item Algebraic Data types, Tuples and records
+  \item Modules and Functors
+  \item ...
+  \end{itemize}
+\end{frame}
+
+\section{A Small Calculator}
+\begin{frame}[fragile]
+  \frametitle{A small calculator}
+  A small calculator to evaluate expressions like $3 + 4$.
+  \pause
+  \lstinputlisting[firstline=23]{polyparser.ml}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Running the code}
+  \begin{lstlisting}
+    $ ocamlfind ocamlc -package mparser -linkpkg \
+      -o polyparser polyparser.ml
+    $ ./polyparser 3+4
+    7
+    $ ./polyparser 3+4*7+1
+    32
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A small webserver}
+  \lstinputlisting[firstline=32]{polyparser_http.ml}
+  \ttfamily{http://localhost:8000/3+4}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Compiling to JavaScript}
+  OCaml can be compiled to JavaScript and has API's for DOM
+  manipulation, js events, XHR, etc.
+
+  \begin{lstlisting}
+    $ js_of_ocaml polyparser -o polyparser.js
+    $ nodejs polyparser.js 3+4
+    7
+  \end{lstlisting}
+  \pause
+  But the JavaScript code is not really readable.
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%Types
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Types}
+\begin{frame}[fragile]
+  \begin{center}
+    \Huge Types
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Type Inference}
+  Type inference is used to validate our assumptions in the code. This
+  will find all the stupid mistakes and let us concentrate on the hard
+  stuff.\newline\\
+  \pause
+  Type inference removes the need for exhaustive unit tests.\newline
+  \pause
+  \begin{itemize}
+    \item OCaml has a ``rich'' type system
+    \item Validates that the program is ``sound''
+    \item Not explicitly typed!
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Type Inference}
+  Lets re-visit the previous examples:
+  \begin{lstlisting}
+  # let rec fac = function
+    | 0 -> 1
+    | n -> n * fac (n - 1);;
+  val fac : int -> int = <fun>
+
+  # fac 5;;
+  - : int = 120
+
+  # let f x y = x + y;;
+  val f : int -> int -> int;;
+  # 3 * "Hi";;
+  Error: This expression has type string but an expression was expected of type int
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A Simple Calculator}
+  In the calculator example we add a type to help the compiler
+  understand our algebra
+  \begin{lstlisting}
+    type op = Add | Mul
+    type expr =
+      | Int of int
+      | Binop of op * expr * expr
+
+    let rec eval = function
+      | Int n -> n
+      | Binop (Add, a, b) -> eval a + eval b
+   (* | Binop (Mul, a, b) -> eval a * eval b *)
+
+  \end{lstlisting}
+  \pause
+  \begin{lstlisting}[language=make,frame=none,numbers=none]
+    $ ocamlc adtparser.ml
+    File "adtparser.ml", line 6, characters 15-79:
+    Warning 8: this pattern-matching is not exhaustive.
+    Here is an example of a value that is not matched:
+    Binop (Mul, _, _)
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extended Calculator}
+  We extend our small language with a \textit{ternary} operator and
+  replacing multiplication with  \textit{less equal} operator:
+
+  \[(5 < 4) \mathbin? (4 + 4) : (5 + 5) \to 10\]
+
+  \pause
+  But now we can create illegal expressions:
+
+  \[4 + (5 < 4) \to *error*\]
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extended Calculator}
+  \lstinputlisting[basicstyle={\footnotesize\ttfamily}]{adtparser_tenary.ml}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{An Extended Calculator}
+  The Compiler will warn us about problems:
+  \begin{lstlisting}[basicstyle={\footnotesize\ttfamily},language=make]
+    File "adtparser_ternary.ml", line 11, characters 10-24:
+    Warning 8: this pattern-matching is not exhaustive.
+    Here is an example of a value that is not matched:
+    (Bool _, _)
+    File "adtparser_ternary.ml", line 14, characters 10-24:
+    Warning 8: this pattern-matching is not exhaustive.
+    Here is an example of a value that is not matched:
+    (Bool _, _)
+    File "adtparser_ternary.ml", line 17, characters 10-16:
+    Warning 8: this pattern-matching is not exhaustive.
+    Here is an example of a value that is not matched:
+    Int _
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A Safe Calculator}
+  Generalized Algebraic Data Types allows to encode more invariants.
+
+  \lstinputlisting[basicstyle={\footnotesize\ttfamily}]{gadtparser_ext.ml}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{A Safe Calculator}
+  The compiler will not accept illegal expressions:
+
+  \[4 + (5 < 4)\]
+
+  \begin{lstlisting}[language=,morekeywords={Lt,bool,int}]
+    # Binop (Add, Int 4, Binop (Lt, Int 5, Int 4));;
+    Error: This expression has type bool binop
+    but an expression was expected of type int binop
+    Type bool is not compatible with type int
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Using a strong type system}
+  A rich type system allows the developer to encode invariants into the typesystem. \\
+  The compiler will generate a proof that the invariants are never broken.\\
+  \pause
+
+  \begin{itemize}
+    \item \LARGE Do not make the illegal state representable
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Using a strong type system}
+
+  Consider the example of a database of elefants.
+  \pause
+  \begin{lstlisting}
+    type elefant = {
+        is_female: bool;
+        has_given_birth: bool;
+      }
+  \end{lstlisting}
+  \pause
+  This record can have four states (2 * 2), but one must never occur (false, true).\newline
+
+  \pause
+
+  Encoding as a ADT to not represent the illegal state is easy in Ocaml
+  \pause
+
+  \begin{lstlisting}
+  type elefant =
+    | Female of { has_given_birth: bool }
+    | Male
+  \end{lstlisting}
+  Not the data structure can only represent three states (2 + 1).
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example: Balanced trees}
+  Defining a balanced tree which the compiler will provide a proof
+  that the tree is always balanced.
+
+  \begin{lstlisting}
+    (* Peano numbers: succ (succ (succ z)) := 3 *)
+    type zero
+    type succ
+    type 'a s = succ * 'a
+
+    type _ node =
+      | Left:     ('a s node * int * 'a   node) -> 'a s s node
+      | Right:    ('a   node * int * 'a s node) -> 'a s s node
+      | Balanced: ('a   node * int * 'a   node) -> 'a s   node
+      | Empty: zero node
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Example: Non-Empty lists}
+  \lstinputlisting[basicstyle={\footnotesize\ttfamily}]{non_empty_list.ml}
+
+\end{frame}
+
+
+
+
+\section{Pros and cons}
+
+%% Add slide about not representing the illegal state
+\begin{frame}[fragile]
+  \frametitle{Strong points}
+  \begin{itemize}
+  \item Rich type system
+  \item Compiler provides proof of correctness
+  \item Easy to refactor
+  \item Strong support for compiling to JS
+  \item Fits well into Issuu's heterogenious stack
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Weak Points}
+  \begin{itemize}
+  \item No multithreading (Multicore is on its way)
+  \item Stacktraces can be misleading
+  \item Exceptions are not checked
+  \end{itemize}
+\end{frame}
+
+\section{Try OCaml}
+\begin{frame}[fragile]
+  \frametitle{Using OCaml}
+  \begin{itemize}
+    \item Try online version of OCaml: \ttfamily{https://try.ocamlpro.com/}
+    \item Read \emph{Real World OCaml} at \ttfamily{https://realworldocaml.org/}
+    \item Install it locally using \emph{opam}, the OCaml package mananger.
+  \end{itemize}
+  \begin{lstlisting}[numbers=none,frame=none]
+    $ brew install opam
+    $ opam switch 4.12.0
+    $ opam install utop
+    $ utop
+  \end{lstlisting}
+\end{frame}
+
+\section{Questions}
+
+\begin{frame}[fragile]
+  \begin{center}
+    \LARGE Questions
+  \end{center}
+\end{frame}
+
+\end{document}
+
+
+%% Need to create a webserver, using the API to actually produce
+%% something
+
+%% Mention that ocaml cannot branch on type runtime. Therefore we
+%% need to tag our variables - like units.
+
+%% Show opam - That there exists a community
+%% Second section is about not representing the illegal state.
+
+%% Redo first section
+%% - Use current example to show all places where the illegal state is
+%% representable, and fix it.
